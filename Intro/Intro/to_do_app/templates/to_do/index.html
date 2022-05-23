@@ -1,0 +1,15 @@
+{% extends "base.html"%} 
+
+{% block page_title %} To do {% endblock %}
+
+
+{% block content %}
+<h1>This is the To Do Application</h1>
+    <ul>
+        {% comment %} for key,value in list.items {% endcomment %}
+        {% for day,to_do  in to_do_list.items  %}
+           {% comment %} <a href="http://127.0.0.1:8000/to_do/{{day}}"><h2> {{day}}:  {{to_do}}</h2></a> {% endcomment %}
+           <a href="{%url "to_do" %}"><h2> {{day}}:  {{to_do}}</h2></a>
+           {% endfor %}
+    </ul>
+{% endblock  %}
