@@ -3,6 +3,8 @@
 {% block page_title %}Single To Do{% endblock  %}
 
 {% block content %}
+{% include "nav.html" with active_page='to_do' %}
+
  <h1>On: {{day}} </h1>
  <h3>{{to_do}}</h3>
 {% endblock  %}

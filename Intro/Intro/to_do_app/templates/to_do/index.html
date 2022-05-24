@@ -1,15 +1,25 @@
 {% extends "base.html"%} 
+{%load static%}
 
 {% block page_title %} To do {% endblock %}
 
+{% block stylesheets %}
+
+{% endblock  %}
 
 {% block content %}
-<h1>This is the To Do Application</h1>
-    <ul>
+
+
+{% include "nav.html" with active_page='Home' %}
+
+<div class="w3-container">
+    <h1>This is the To Do Application</h1>
+    <ul class="w3-ul w3-border ">
         {% comment %} for key,value in list.items {% endcomment %}
         {% for day,to_do  in to_do_list.items  %}
            {% comment %} <a href="http://127.0.0.1:8000/to_do/{{day}}"><h2> {{day}}:  {{to_do}}</h2></a> {% endcomment %}
-           <a href="{%url "to_do" %}"><h2> {{day}}:  {{to_do}}</h2></a>
+             <li> <a href="{%url "to_do_day" day=day %}"><h3> {{day}}:  {{to_do}}</h3></a></l1>
            {% endfor %}
     </ul>
+</div>
 {% endblock  %}
