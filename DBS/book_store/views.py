@@ -50,5 +50,4 @@ def update_book(request,title,author):
 def delete(request,title):
      book=Book.objects.all().filter(title=title).first()
      book.delete()
-
      return HttpResponse(f"<h1>Book {book.title} Author {book.author} Has been deleted</h1>")
