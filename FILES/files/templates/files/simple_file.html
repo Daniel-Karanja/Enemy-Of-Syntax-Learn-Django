@@ -1,0 +1,15 @@
+{% extends 'base.html' %} {% block content %}
+
+<div>
+  <form
+    action="{%url 'simple_file'%}"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <input type="file" name="img" />
+    <button>Submit</button>
+  </form>
+</div>
+
+{% endblock %}

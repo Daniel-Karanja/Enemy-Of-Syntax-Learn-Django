@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content%}
+    <div>
+        {% for user  in users  %}
+          <p>Name: {{user.name}}</p>
+          <p>Email: {{user.email}}</p>
+          <p>Phone: {{user.phone}}</p>
+          <img  width="80%" src='{{user.profile.url}}'/>
+        {% endfor %}
+    </div>
+{% endblock  %}
