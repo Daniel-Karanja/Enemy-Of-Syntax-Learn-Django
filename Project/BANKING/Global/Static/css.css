@@ -1,0 +1,42 @@
+.vh-100 {
+  height: 100vh;
+}
+
+.vw-100 {
+  width: 100vw;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-space-evenly {
+  display: flex !important;
+  justify-content: space-evenly !important;
+}
+
+.thick-text {
+  font-weight: bold;
+}
+
+.form-style-1 input {
+  padding: 12px;
+  display: block;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  border: 1px solid #ccc !important;
+}
+
+.d-flex {
+  display: flex;
+}

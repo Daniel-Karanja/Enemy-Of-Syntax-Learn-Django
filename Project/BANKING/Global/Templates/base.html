@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    {% load static %}
+    <title>{{page_title}}</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css.css'  %}" />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  </head>
+  <body>
+    <!--[if lt IE 7]>
+      <p class="browsehappy">
+        You are using an <strong>outdated</strong> browser. Please
+        <a href="#">upgrade your browser</a> to improve your experience.
+      </p>
+    <![endif]-->
+
+    {% if show_panel %}
+      <div class="w-100 w3-display-container   w3-panel {{panel_color}}" id="mess_box">
+        <span onclick="this.parentElement.style.display='none'"
+        class="w3-button  {{panel_color}} w3-large w3-display-topright">x</span>
+        <p class="{{panel_message_class}} w3-xlarge">{{panel_message}}</p>
+      </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+    <script src="{% static 'js.js'%}" async defer></script>
+  </body>
+</html>

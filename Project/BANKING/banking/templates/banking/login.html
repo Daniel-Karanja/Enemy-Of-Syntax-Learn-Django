@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <div class="vh-100 vw-100 center-container">
+       <div class="w3-card-4  w3-round " style="width:40% ">
+        <div class="w3-container w3-blue w3-center w3-round w3-margin-bottom">
+            <h2>Sign In</h2>
+          </div>   
+        <form class="w3-padding form-style-1" method="post" action="{%url 'user_login'%}">
+               {% csrf_token %}
+               {% for field in form  %}
+                 <p>
+                     <label class="w3-large thick-text w3-text-blue">{{field.label}}</label>
+                     {{field}}
+                 </p>
+               {% endfor %}
+               <div class="w3-100 w3-center w3-margin-top">
+                 <button class="w3-button w3-margin-bottom w3-round w3-ripple w3-blue">Submit</button>     
+              <div/>
+           </form>
+       </div>
+   </div>
+{% endblock %}

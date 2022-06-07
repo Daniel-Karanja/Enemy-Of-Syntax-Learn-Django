@@ -1,0 +1,61 @@
+{% extends 'dash.html' %}
+
+{% block content %}
+<div class="w-100 h-100 w3-container">
+
+     <div class="w3-margin-top w3-margin-bottom">
+       <p style="font-size:3vw;margin-left:8%" ><b>Account Balance: <small class="w3-text-blue">{{account.balance}} Ksh</small></b></p>
+       <div class="w-100 h-100 center-container">
+         <div class="w3-card-4" style="width:40%">
+
+          <ul class="w3-ul w3-hoverable">
+            <li>Name:  {{user.name}}</li>
+            <li>Account Type: {{account.type}}</li>
+            <li>Last Transaction: {% if account.last_transaction == -1 %}
+                None
+              {% else %}
+               'Rember to print last transaction'
+              {% endif %}</li>
+            <li>Balance: {{account.balance}} Ksh</li>
+          </ul>
+          <div class="w3-margin-top row-space-evenly w-100">
+             <button
+             onclick="document.getElementById('deposit_modal').style.display='block'"
+             class="w3-button w3-green w3-round-large w3-margin-bottom w3-large">Mpesa Deposit</button>
+             <button class="w3-button w3-red w3-round-large w3-margin-bottom w3-large">Withdraw</button>
+          </div>
+         </div>
+       </div>
+      </div>
+</div>
+
+
+
+{% endblock  %}
+
+
+{% block modals %}
+<div id="deposit_modal" class="w3-modal w3-animate-zoom">
+  <div class="w3-modal-content" style="width:50%">
+    <header class="w3-container w3-blue"> 
+      <span onclick="document.getElementById('deposit_modal').style.display='none'" 
+      class="w3-button w3-display-topright">&times;</span>
+      <h2>Mpesa Deposit</h2>
+    </header>
+    <div class="w3-container">
+      <form method='post' action="{%url 'handle_deposit' user_id=user.id account_id=account.id%}" class="form-style-1">
+        {% csrf_token %}
+        {% for field  in deposit_form %}
+              <p>
+                <label class="w3-large thick-text w3-text-blue">{{field.label}}</label>
+                {{field}}
+            </p>
+        {% endfor %}
+        <div class="w3-100 w3-center w3-margin-top">
+          <button class="w3-button w3-margin-bottom w3-round w3-ripple w3-blue">Submit</button>     
+       <div/>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock  %}
