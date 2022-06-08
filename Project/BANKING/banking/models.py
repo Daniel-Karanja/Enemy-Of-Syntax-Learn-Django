@@ -9,6 +9,11 @@ acc_type=(
     ("Personal","Personal"),
 )
 
+acc_operations=(
+    ("Deposit","Deposit"),
+    ("Withdraw","Withdraw"),
+)
+
 class User(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=60,unique=True)
@@ -29,7 +34,9 @@ class Account(models.Model):
     balance=models.BigIntegerField(default=0)
 
 class Transactions(models.Model):
-    type= models.CharField(default="Deposit",max_length=50)
+     
+
+    type= models.CharField(default="Deposit",max_length=50,choices=acc_operations)
     amount= models.BigIntegerField(default=0)
     transaction=models.CharField(max_length=50)
     time= models.DateTimeField(default=datetime.datetime.now)
