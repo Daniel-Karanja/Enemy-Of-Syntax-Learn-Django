@@ -55,7 +55,7 @@ def my_account(request,user_id,account_id):
     panel_message=''
     panel_message_class='w3-center thick-text'
 
-    
+    last_trans='None'
 
 
     user= User.objects.get(pk=user_id)
@@ -63,6 +63,13 @@ def my_account(request,user_id,account_id):
     acc=Account.objects.get(pk=account_id)
 
     deposit_form=DepositForm()
+    withdraw_form=WithdrawForm()
+
+    if acc.last_transaction != -1:
+       trans=Transactions.objects.get(pk=acc.last_transaction)
+       last_trans=f'{trans.type}, Amount: {trans.amount} Ksh'
+      
+
 
     if 'cust_mess' in request.session :
         if request.session['cust_mess'] ==True:
@@ -76,6 +83,8 @@ def my_account(request,user_id,account_id):
                            'account':acc,
                            'user':user,
                            'deposit_form':deposit_form,
+                           'withdraw_form':withdraw_form,
+                           'last_trans':last_trans,
                            'show_panel':show_panel, 
                            'panel_color':panel_color,
                            'panel_message':panel_message,
@@ -107,16 +116,38 @@ def handle_deposit(request,user_id,account_id):
             # Make Request to the mpesa server for stk push.
             # Best Case Deposit goes through
             # We will handle failed transactions later
-            account.balance=account.balance+amount    
-            account.save()   
+            
             trans=Transactions(amount=amount,transaction=time.time(),account=account)
             trans.save()
-            return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
 
-    return HttpResponse("Handling the deposit")
+            account.balance=account.balance+amount   
+            account.last_transaction=trans.id 
+            account.save()   
+
+            request.session['cust_mess']=True 
+            request.session['show_panel']=True
+            request.session['panel_message']=f'Success Amount {amount} has been deposited to your Account By {phone}'
+            request.session['panel_color']='w3-green'
+            return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
+        request.session['cust_mess']=True 
+        request.session['show_panel']=True
+        request.session['panel_message']='!!Check Form,its invalid'
+        request.session['panel_color']='w3-red'
+        return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
+
+    request.session['cust_mess']=True 
+    request.session['show_panel']=True
+    request.session['panel_message']='!!!! Error Processing transaction. Contact Admin'
+    request.session['panel_color']='w3-red'
+    return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
+
 
 
 def handle_withdraw(request,user_id,account_id):
+    
+    
+    request.session['show_panel']=True
+    request.session['panel_color']='w3-red'
 
     user= User.objects.get(pk=user_id)
     
@@ -127,6 +158,13 @@ def handle_withdraw(request,user_id,account_id):
         if deposit_form.is_valid():
             amount=deposit_form.cleaned_data['amount']
             password=deposit_form.cleaned_data['password']
+            
+            if user.password != password:
+                print("Throw an Error")
+                request.session['cust_mess']=True 
+                request.session['panel_message']='!!! Enter Corect Password To Withdraw'
+                return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
+
             # Mpesa Deposit
             # Make Request to the mpesa server for stk push.
             # Best Case Deposit goes through
@@ -138,17 +176,21 @@ def handle_withdraw(request,user_id,account_id):
 
             if account.balance < amount:
                 print("You dont have enough cash")
-                request.session['cust_mess']=True 
-                request.session['show_panel']=True
+                request.session['cust_mess']=True       
                 request.session['panel_message']=f'You Dont have enough cash in your account <br>Your Acount Balance is {account.balance } <br>Amount To Withdraw:{amount}<br>Work within your means !!!!!!!!!!!!!!!!'
-                request.session['panel_color']='w3-red'
                 return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
            
             
-            account.balance=account.balance-amount   
-            account.save()   
+              
             trans=Transactions(type="Withdraw",amount=amount,transaction=time.time(),account=account)
             trans.save()
+            account.balance=account.balance-amount  
+            account.last_transaction=trans.id 
+            account.save() 
+            request.session['panel_color']='w3-green'
+            request.session['panel_message']=f'Success, {amount} has been withdrawn'
             return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
-
+    
+    request.session['panel_message']='!!!! Error Processing Withdraw transaction. Contact Admin'
+    request.session['panel_color']='w3-red'
     return HttpResponse("Handling the Withdraw")

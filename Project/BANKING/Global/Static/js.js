@@ -6,7 +6,7 @@ function closeMessageBox() {
   box = document.getElementById("mess_box");
   setTimeout(() => {
     box.style.display = "none";
-  }, 6000);
+  }, 15000);
 }
 
 closeMessageBox();
