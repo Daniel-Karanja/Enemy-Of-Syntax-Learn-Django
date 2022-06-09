@@ -26,14 +26,14 @@
         <div style="width:15%" class="vh-100 w3-bar-block w3-padding w3-card-4">
             <p style="font-size:1.2vw" class="w3-center w3-bar-item w3-text-blue w3-margin-top w3-margin-bottom"><b>Banking Solution</b></p>
             
-            <button class="w3-bar-item w3-button w3-margin-top w3-border w3-round {% if myAccount %}w3-blue{% endif %}"><b>My Account</b></button>
+            <a href="{% url 'my_account' user_id=user_id account_id=account_id %}" class="w3-bar-item w3-button w3-margin-top w3-border w3-round {% if myAccount %}w3-blue{% endif %}"><b>My Account</b></a>
 
-            <button class="w3-bar-item w3-button w3-margin-top w3-border w3-round {% if transactions %}w3-blue{% endif %}" ><b>Transactions</b></button>
+            <a  href="{% url 'transactions' account_id=account_id  %}"  class="w3-bar-item w3-button w3-margin-top w3-border w3-round {% if transactions %}w3-blue{% endif %}" ><b>Transactions</b></a>
         </div>
         <div style="width:85% " class="vh-100">
             {% if show_panel %}
             <div class="w-100 w3-display-container   w3-panel {{panel_color}}" id="mess_box">
-              <span onclick="this.parentElement.style.display='none'"
+              <span onclick="this2	Deposit	-1000	1654670143.9435441	June 8, 2022, 6:35 a.m.	1234rentElement.style.display='none'"
               class="w3-button  {{panel_color}} w3-large w3-display-topright">x</span>
               <p class="{{panel_message_class}} w3-xlarge">{{panel_message}}</p>
             </div>

@@ -56,7 +56,7 @@ def my_account(request,user_id,account_id):
     panel_message_class='w3-center thick-text'
 
     last_trans='None'
-
+    request.session['user_id']=user_id
 
     user= User.objects.get(pk=user_id)
     
@@ -80,6 +80,8 @@ def my_account(request,user_id,account_id):
 
     return render(request,'banking/my_account.html',{
                            'myAccount':True,
+                           'user_id':user_id,
+                           'account_id':account_id,
                            'account':acc,
                            'user':user,
                            'deposit_form':deposit_form,

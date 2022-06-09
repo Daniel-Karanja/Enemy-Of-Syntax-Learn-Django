@@ -1,0 +1,31 @@
+{% extends 'dash.html' %} 
+
+
+{% block content %}
+
+<div class="vh-100 w-100 center-container">
+    <table class="w3-table-all w3-card-4" style="width:50%">
+        <tr class="w3-large">
+            <th>No</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Transaction Id</th>
+            <th>Time</th>
+            <th>Account</th>
+            <th>Balance</th>
+          </tr>
+          {% for  tran in trans %}
+          <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{tran.type}}</td>
+            <td>{{tran.amount}}</td>
+            <td>{{tran.transaction}}</td>
+            <td>{{tran.time}}</td>
+            <td>{{tran.account.number}}</td>
+            <td>{{tran.account.balance }}</td>
+          </tr>
+          {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
