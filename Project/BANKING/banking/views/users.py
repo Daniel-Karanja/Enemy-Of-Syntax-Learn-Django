@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
 from django.urls import reverse
 import time
+import urllib3
+import json
 
+http = urllib3.PoolManager()
 
 
 from banking.forms.loginForm import SignInForm
@@ -118,17 +121,25 @@ def handle_deposit(request,user_id,account_id):
             # Make Request to the mpesa server for stk push.
             # Best Case Deposit goes through
             # We will handle failed transactions later
-            
-            trans=Transactions(amount=amount,transaction=time.time(),account=account)
+            url="http://127.0.0.1:7000/mpesa/stk/push"
+            payload=json.dumps({
+                "phone":phone,
+                "amount":amount
+            }).encode("utf8")
+            res=http.request(method='POST', url=url,body=payload,headers={
+                'Content-Type': 'application/json'
+            })
+            data=json.loads(res.data.decode('utf-8'))
+            print(data)
+            trans=Transactions(amount=amount,transaction=data[payload]['CheckoutRequestID'],account=account,status="pending")
             trans.save()
 
-            account.balance=account.balance+amount   
+            # account.balance=account.balance+amount   
             account.last_transaction=trans.id 
             account.save()   
-
             request.session['cust_mess']=True 
             request.session['show_panel']=True
-            request.session['panel_message']=f'Success Amount {amount} has been deposited to your Account By {phone}'
+            request.session['panel_message']=f'Success {data["payload"]["ResponseDescription"]}.Go To transactions page to verify the transaction'
             request.session['panel_color']='w3-green'
             return HttpResponseRedirect(reverse('my_account',kwargs={'user_id': user.id,'account_id':account.id}))
         request.session['cust_mess']=True 

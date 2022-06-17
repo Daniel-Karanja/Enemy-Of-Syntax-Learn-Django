@@ -14,6 +14,12 @@ acc_operations=(
     ("Withdraw","Withdraw"),
 )
 
+trans_status=(
+    ("pending","pending"),
+    ("complete","complete"),
+    ("failed","failed"),
+)
+
 class User(models.Model):
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=60,unique=True)
@@ -41,3 +47,4 @@ class Transactions(models.Model):
     transaction=models.CharField(max_length=50)
     time= models.DateTimeField(default=datetime.datetime.now)
     account= models.ForeignKey(Account,on_delete=models.CASCADE)
+    status=models.CharField(max_length=50,blank=True,choices=trans_status)

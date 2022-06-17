@@ -19,5 +19,6 @@ from book_store.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("books",get_puppies)
+    path("puppies/",get_puppies),
+    path("create/puppy/",post_puppies)
 ]

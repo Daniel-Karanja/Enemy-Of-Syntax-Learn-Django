@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
+# {
+# "phone":254728829146,"amount":1
+# }
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("mpesa/",include('rest.urls'))
 ]
+#20220616095150
